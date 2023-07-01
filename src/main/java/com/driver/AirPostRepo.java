@@ -1,11 +1,12 @@
-package com.driver.controllers;
+package com.driver;
 
 import com.driver.model.Airport;
 import com.driver.model.Flight;
 import com.driver.model.Passenger;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
-
+@Repository
 public class AirPostRepo {
     Map<String,Airport> Airports=new HashMap<>();
     Map<Integer,Flight> flights=new HashMap<>();
@@ -49,18 +50,18 @@ public class AirPostRepo {
     public String BookAteicket(Integer flightId, Integer passengerId) {
         if(FlightwithPassenger.containsKey(flightId)){
             List<Integer> passengers=FlightwithPassenger.get(flightId);
-             if(passengers.size()==this.getFlightbyFlightId(flightId).get().getMaxCapacity()){
-                 return "FAILURE";
-             }
-               for(int passenger:passengers ){
-                   if(passenger==passengerId){
-                       return "FAILURE";
-                   }
+            if(passengers.size()==this.getFlightbyFlightId(flightId).get().getMaxCapacity()){
+                return "FAILURE";
+            }
+            for(int passenger:passengers ){
+                if(passenger==passengerId){
+                    return "FAILURE";
+                }
             }
             int revenue=flightWithRevenue.get(flightId)+3000*passengers.size();
-               flightWithRevenue.put(flightId,revenue);
-               passengers.add(passengerId);
-               FlightwithPassenger.put(flightId,passengers);
+            flightWithRevenue.put(flightId,revenue);
+            passengers.add(passengerId);
+            FlightwithPassenger.put(flightId,passengers);
 
         }
         else{
