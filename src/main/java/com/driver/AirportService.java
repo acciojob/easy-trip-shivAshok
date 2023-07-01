@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class AirportService {
     @Autowired
-    private AirPostRepo airrepo;
+    private AirPostRepo airrepo=new AirPostRepo();
     public void AddairPort(Airport airport) {
         airrepo.addTheAirport(airport);
     }
