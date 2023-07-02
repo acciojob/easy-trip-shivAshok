@@ -28,7 +28,7 @@ public class AirportService {
                 maxterminal=airport.getNoOfTerminals();
                 largestAirport=airport.getAirportName();
             }
-            else if(airport.getNoOfTerminals()==maxterminal && airport.getAirportName().compareTo(largestAirport)>0){
+            else if(airport.getNoOfTerminals()==maxterminal && airport.getAirportName().compareTo(largestAirport)<0){
                 largestAirport=airport.getAirportName();
             }
         }
@@ -61,13 +61,14 @@ public class AirportService {
     public int getNoOfPeople(Date date, String airportName) {
         Optional<Airport> airportOpt=airrepo.getAirportByname(airportName);
         if(airportOpt.isEmpty()){
-            throw new RuntimeException("Airport is not present");
+            return 0;
         }
         List<Flight> flights=airrepo.getAllflights();
         int numOfpeople=0;
         for(Flight flight:flights){
             if(flight.getFlightDate().equals(date) && (flight.getToCity().equals(airportOpt.get().getCity())||flight.getToCity().equals(airportOpt.get().getCity()))) {
-                numOfpeople += flight.getMaxCapacity();
+                List<Integer> passengers=airrepo.getAllPassengerByflightId(flight.getFlightId());
+                numOfpeople+=passengers.size();
             }
         }
         return numOfpeople;
@@ -94,7 +95,7 @@ public class AirportService {
 
     public String cancelTicket(Integer flightId, Integer passengerId) {
         if(airrepo.getFlightbyFlightId(flightId).isEmpty()){
-            return "FALIURE";
+            return "FAILURE";
         }
         List<Integer> passenger=airrepo.getAllPassengerByflightId(flightId);
         boolean ispresent=false;
@@ -108,7 +109,7 @@ public class AirportService {
             return "SUCCESS";
         }
         else{
-            return "FALIURE";
+            return "FAILURE";
         }
     }
 
